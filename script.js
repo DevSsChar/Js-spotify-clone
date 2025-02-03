@@ -36,7 +36,7 @@ async function getSongs(folder) {
     songUL.innerHTML = "";
     for (const song of songs) {
         songUL.innerHTML = songUL.innerHTML + `<li>
-                            <img src="music.svg" alt="">
+                            <img src="svg/music.svg" alt="">
                             <div class="info">
                                 <div>${song.replaceAll("%20", " ").replaceAll("%26", " ")}</div>
                                 <div>
@@ -45,7 +45,7 @@ async function getSongs(folder) {
                             </div>
                             <div class="playnow">
                                 <span>Play Now</span>
-                                <img src="play.svg" alt="" style="filter:invert(1)">
+                                <img src="svg/play.svg" alt="" style="filter:invert(1)">
                             </div>
                         </li>`;
     }
@@ -64,7 +64,7 @@ const playMusic = (track, pause = false) => {
     currentSong.src = `./${currFolder}/` + track; // Replaced with relative path
     if (!pause) {
         currentSong.play();
-        play.src = "pause.svg";
+        play.src = "svg/pause.svg";
     }
     // when music is playing, change the button to pause button
     document.querySelector(".songinfo").innerHTML = track;
@@ -134,10 +134,10 @@ async function main() {
     play.addEventListener("click", (e) => {
         if (currentSong.paused) {
             currentSong.play();
-            play.src = "pause.svg";
+            play.src = "svg/pause.svg";
         } else {
             currentSong.pause();
-            play.src = "play.svg";
+            play.src = "svg/play.svg";
         }
     });
 
@@ -185,14 +185,14 @@ async function main() {
 
     // add event listener to mute the track
     document.querySelector(".volume>img").addEventListener("click", (e) => {
-        if (e.target.src.includes("volume.svg")) {
-            e.target.src = e.target.src.replace("volume.svg", "mute.svg");
+        if (e.target.src.includes("svg/volume.svg")) {
+            e.target.src = e.target.src.replace("svg/volume.svg", "svg/mute.svg");
             currentSong.volume = 0;
             document.querySelector(".range").getElementsByTagName("input")[0].value = 0;
         } else {
             currentSong.volume = 0.1;
             document.querySelector(".range").getElementsByTagName("input")[0].value = 10;
-            e.target.src = e.target.src.replace("mute.svg", "volume.svg");
+            e.target.src = e.target.src.replace("svg/mute.svg", "svg/volume.svg");
         }
     });
 }
