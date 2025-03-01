@@ -10,7 +10,7 @@ const next = document.getElementById("next");
 // Manifests for songs and album metadata
 const songsManifest = {
   "songs/ncs": ["Abroad Again - Jeremy Blake.mp3", "Blue Ribbons - TrackTribe.mp3","Colony - TrackTribe.mp3","Decimate - Jeremy Blake.mp3","Final Girl - Jeremy Blake.mp3","FIVE OF A KIND - Density Time.mp3","Girl On Top - Amy Lynn the Honeymen.mp3"],
-  "songs/cs": ["Ravan theme song.mp3", "Veera Randheera.mp3","Pehla Pyaar.mp3","Kalki theme song.mp3","Aaj Ki Raat  Stree 2  Tamannaah Bhatia  Sachin-Jigar  Madhubanti  Divya  Amitabh  15th August.mp3","Mere Mehboob  Vicky Vidya Ka Woh Wala Video  Rajkummar  Triptii Dimri Sachin-Jigar,Shilpa,Sachet.mp3"]
+  "songs/cs": ["Ravan theme song.mp3", "Veera Randheera.mp3","Pehla Pyaar.mp3","Kalki theme song.mp3","aaj ki rat.mp3","mere mehboob.mp3"]
 };
 
 const albumsManifest = {
