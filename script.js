@@ -1,16 +1,33 @@
 let currentSong = new Audio();
 let songs = [];
 let currFolder = "";
+let loopEnabled = false; // Global flag for loop mode
 
 // Get control elements from the DOM
 const play = document.getElementById("play");
 const previous = document.getElementById("previous");
 const next = document.getElementById("next");
+const loopButton = document.getElementById("loop"); // Ensure you have an element with id "loop"
 
 // Manifests for songs and album metadata
 const songsManifest = {
-    "songs/ncs": ["Abroad Again - Jeremy Blake.mp3", "Blue Ribbons - TrackTribe.mp3", "Colony - TrackTribe.mp3", "Decimate - Jeremy Blake.mp3", "Final Girl - Jeremy Blake.mp3", "FIVE OF A KIND - Density Time.mp3", "Girl On Top - Amy Lynn the Honeymen.mp3"],
-    "songs/cs": ["Ravan theme song.mp3", "Veera Randheera.mp3", "Pehla Pyaar.mp3", "Kalki theme song.mp3", "aaj ki rat.mp3", "mere mehboob.mp3"]
+    "songs/ncs": [
+        "Abroad Again - Jeremy Blake.mp3",
+        "Blue Ribbons - TrackTribe.mp3",
+        "Colony - TrackTribe.mp3",
+        "Decimate - Jeremy Blake.mp3",
+        "Final Girl - Jeremy Blake.mp3",
+        "FIVE OF A KIND - Density Time.mp3",
+        "Girl On Top - Amy Lynn the Honeymen.mp3"
+    ],
+    "songs/cs": [
+        "Ravan theme song.mp3",
+        "Veera Randheera.mp3",
+        "Pehla Pyaar.mp3",
+        "Kalki theme song.mp3",
+        "aaj ki rat.mp3",
+        "mere mehboob.mp3"
+    ]
 };
 
 const albumsManifest = {
@@ -71,6 +88,9 @@ const playMusic = (track, pause = false) => {
         currentSong.play();
         play.src = "svg/pause.svg";
     }
+    
+    // Optionally update any metadata on the lock screen via Media Session API here
+
     document.querySelector(".songinfo").innerHTML = track;
     document.querySelector(".songtime").innerHTML = "00:00/00:00";
 };
@@ -164,15 +184,21 @@ async function main() {
         playMusic(songs[newIndex]);
     });
 
-    // When a song ends, automatically play the next song (circularly)
+    // When a song ends, check loop option:
     currentSong.addEventListener("ended", () => {
-        const currentFileEncoded = currentSong.src.split("/").pop();
-        const currentFile = decodeURIComponent(currentFileEncoded);
-        const index = songs.indexOf(currentFile);
-        const newIndex = (index === -1 || index >= songs.length - 1) ? 0 : index + 1;
-        playMusic(songs[newIndex]);
+        if (loopEnabled) {
+            // Replay current song if loop is enabled
+            currentSong.currentTime = 0;
+            currentSong.play();
+        } else {
+            // Otherwise, auto-advance to the next song (circularly)
+            const currentFileEncoded = currentSong.src.split("/").pop();
+            const currentFile = decodeURIComponent(currentFileEncoded);
+            const index = songs.indexOf(currentFile);
+            const newIndex = (index === -1 || index >= songs.length - 1) ? 0 : index + 1;
+            playMusic(songs[newIndex]);
+        }
     });
-
 
     // Volume control and mute toggle
     document.querySelector(".range input").addEventListener("change", (e) => {
@@ -188,6 +214,17 @@ async function main() {
             currentSong.volume = 0.1;
             document.querySelector(".range input").value = 10;
             e.target.src = e.target.src.replace("svg/mute.svg", "svg/volume.svg");
+        }
+    });
+
+    // Loop button event listener to toggle loop mode
+    loopButton.addEventListener("click", () => {
+        loopEnabled = !loopEnabled;
+        // Update loop button appearance based on state
+        if (loopEnabled) {
+            loopButton.src = "svg/icons8-loop.svg"; // Ensure you have an icon for loop-on
+        } else {
+            loopButton.src = "svg/icons8-ban-24.png";
         }
     });
 }
